@@ -13,6 +13,8 @@ SudokuSolver::SudokuSolver(){
 		sudokuBoard[i] = new int[size];
 	}
 
+	backTracker = new BackTracker[size];
+
 	readData();
 
 }
@@ -45,9 +47,9 @@ void SudokuSolver::printBoard(){
 			else
 				p++;
 
-			if (29 == s) {
+			if (size*3+2 == s) {
 				//ss << endl;
-				for (int s = 0; s < size; s++)
+				for (int s = 0; s < size-1; s++)
 					ss << "---";
 				ss << std::endl;
 				s = 0;
@@ -67,7 +69,7 @@ bool SudokuSolver::readData(){
 
 	std::cout << "IN ON READ DATA " << std::endl;
 	std::ifstream dataFile;
-	dataFile.open("9.txt", std::ios::in);
+	dataFile.open("9t.txt", std::ios::in);
 	if (!dataFile.is_open()) {
 		std::cout << "dataFile wasnt loaded with '4'" << std::endl;
 	}
@@ -100,4 +102,38 @@ bool SudokuSolver::readData(){
 	//	std::cout << "Counter: " << c << std::endl;
 	//}
 	return true;
+}
+
+vector<int> SudokuSolver::possibleEntries()
+{
+
+
+
+	return vector<int>();
+}
+
+
+
+
+bool SudokuSolver::solveBoard(){
+
+
+
+
+
+	return false;
+}
+
+SudokuSolver::BackTracker::BackTracker(){
+
+	this->column = 0;
+	this->value = 0;
+	this->row = 0;
+
+}
+
+void SudokuSolver::BackTracker::setValue(int value){
+
+	this->value = value;
+
 }
