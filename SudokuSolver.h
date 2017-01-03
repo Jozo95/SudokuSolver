@@ -8,6 +8,8 @@
 #include <vector>
 #include <sstream>
 
+using namespace std;
+
 class SudokuSolver {
 
 
@@ -33,8 +35,9 @@ public:
 	SudokuSolver();
 	void printBoard();
 	bool readData();
-	std::vector<int> possibleEntries();
+	void possibleEntries(int row, int column, int possEntries[], int& sizer);
+	bool isSafe(int num, int row, int column);
 
-	bool solveBoard();
+	bool solveBoard(int column, int row);
 
 };

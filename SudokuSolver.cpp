@@ -1,7 +1,5 @@
 #include "SudokuSolver.h"
 
-using namespace std;
-
 
 
 SudokuSolver::SudokuSolver(){
@@ -13,10 +11,24 @@ SudokuSolver::SudokuSolver(){
 		sudokuBoard[i] = new int[size];
 	}
 
-	backTracker = new BackTracker[size];
+	//backTracker = new BackTracker[size];
 
 	readData();
 
+
+	//int sizer = 9;
+	//int *possEntries = new int[sizer];
+
+
+	//for (int i = 1; i <= sizer; i++) {
+	//	possEntries[i - 1] = i;
+	//}
+	//possibleEntries(8, 1, possEntries, sizer);
+	////cout << "Accepted numbers for row " << row1 << ". column " << column1 << endl;
+	//	for (int i = 0; i < sizer; i++) {
+	//		cout << "Accepted: " << possEntries[i] << endl;
+	//}
+	solveBoard(-1,0);
 }
 
 void SudokuSolver::printBoard(){
@@ -62,6 +74,7 @@ void SudokuSolver::printBoard(){
 		
 		
 	}
+	ss << endl;
 	cout << ss.str();
 }
 
@@ -104,24 +117,135 @@ bool SudokuSolver::readData(){
 	return true;
 }
 
-vector<int> SudokuSolver::possibleEntries()
+bool SudokuSolver::isSafe(int num, int row, int column) {
+	for (int i = 0; i < size; i++) {
+		//row modifier
+		if (sudokuBoard[row][i] == num){
+			return false;
+		}
+		if (sudokuBoard[i][column] == num) {
+			return false;
+		}
+	}
+
+
+	int r, c;
+	for (int rowz = 0; rowz < 3; rowz++) {
+		for (int colz = 0; colz < 3; colz++) {
+			r = rowz + (row - (row % 3));
+			c = colz + (column - (column % 3));
+			if (sudokuBoard[r][c] == num)
+				return false;
+		}
+	}
+
+
+	return true;
+}
+void SudokuSolver::possibleEntries(int row, int column, int possEntries[], int& sizer)
 {
+	
+	int *foundNumbers = new int[size*2]; // change
+
+	int x = 0;
+
+
+	for (int i = 0; i < sizer; i++)
+		for (int rowz = 0; rowz < 3; rowz++)
+			for (int colz = 0; colz < 3; colz++)
+				if (sudokuBoard[rowz + (row - (row % 3))][colz + (column - (column % 3))] == possEntries[i]) {
+					if (sizer == 1) {
+						possEntries[i] = -1;
+					}
+					else
+						possEntries[i] = possEntries[--sizer];
+				}
 
 
 
-	return vector<int>();
+	delete foundNumbers;
 }
 
 
 
 
-bool SudokuSolver::solveBoard(){
+bool SudokuSolver::solveBoard(int column, int row){
+	int sizer = size;
+	int row1 = row, column1 = column+1;
 
 
 
+	
+	bool zeroFound = false;
 
+	for (int i = row1; i < size; i++) {
 
-	return false;
+		for (int k = column1; k < size; k++) {
+
+			if (sudokuBoard[i][k] == 0) {
+				row1 = i;
+				column1 = k;
+				i = size;
+				zeroFound = true;
+				break;
+			}
+
+		}
+	}
+	//printBoard();
+	if (zeroFound) {
+		int *possEntries = new int[sizer];
+
+		int ctrrr = 0;
+		for (int i = 1; i <= size; i++) {
+			if (isSafe(i, row1, column1)) {
+				possEntries[ctrrr++] = i;
+			}
+			else
+				sizer--;
+		}
+		sizer = ctrrr;
+		int counter = 0;
+		//possibleEntries(row1, column1, possEntries, sizer);
+		/*cout << "Accepted numbers for row " << row1 << ". column " << column1 << endl;
+		for (int i = 0; i < sizer; i++) {
+			cout << "Accepted: " << possEntries[i] << endl;
+		}*/
+		int tester = possEntries[counter];
+		if (tester > 0 && tester <=size) { // || poss
+			sudokuBoard[row1][column1] = possEntries[counter++];
+		}
+		else {
+			
+			sudokuBoard[row1][column1] = 0;
+			delete possEntries;
+			//printBoard();
+			return false;
+
+		}
+		while (!solveBoard(-1, 0)) {
+			if (possEntries[counter] > 0 && possEntries[counter] <=size) { // || poss
+				sudokuBoard[row1][column1] = possEntries[counter++];
+			}
+			else {
+				delete possEntries;
+				sudokuBoard[row1][column1] = 0;
+				return false;
+				
+			}
+		}
+		delete possEntries;
+		return true;
+	}
+
+	else {
+		cout << "NO ZEROS FOUND " << endl;
+		return true;
+	}
+	
+	/*for (int i = 0; i < sizer; i++){
+		cout << "Accepted: " << possEntries[i] << endl;
+	}*/
 }
 
 SudokuSolver::BackTracker::BackTracker(){
