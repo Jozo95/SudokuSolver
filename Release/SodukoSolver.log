@@ -1,0 +1,7 @@
+﻿  Source.cpp
+  SudokuSolver.cpp
+SudokuSolver.cpp(352): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  Generating code
+  All 207 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  SodukoSolver.vcxproj -> C:\Users\jozef\OneDrive\Dokument\Visual Studio 2015\Projects\SodukoSolver\Release\SudokuSolver.exe

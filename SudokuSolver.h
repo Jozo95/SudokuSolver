@@ -33,11 +33,14 @@ private:
 
 public:
 	SudokuSolver();
+	SudokuSolver(int size);
 	void printBoard();
-	bool readData();
-	void possibleEntries(int row, int column, int possEntries[], int& sizer);
+	bool readData(string filename);
 	bool isSafe(int num, int row, int column);
 
-	bool solveBoard(int column, int row);
+	bool solveBoard();
+	bool SudokuSolver::coverFiller(int row, int column);
+
+	int randomizedSudoku(int size);
 
 };
